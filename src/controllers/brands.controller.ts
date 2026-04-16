@@ -1,6 +1,6 @@
-import { ApiError } from "@/lib/utils/api-error.js";
-import type { CreateBrandDto } from "@/schemas/brand-schema/brand-create.schema.js";
-import { BrandsService } from "@/services/brands.service.js";
+import { ApiError } from "../lib/utils/api-error.js";
+import type { CreateBrandDto } from "../schemas/brand-schema/brand-create.schema.js";
+import { BrandsService } from "../services/brands.service.js";
 import type { Request, Response } from "express";
 
 export class BrandsControllers {

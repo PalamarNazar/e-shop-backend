@@ -1,6 +1,6 @@
-import { ApiError } from "@/lib/utils/api-error.js";
-import type { ColorDto } from "@/schemas/color-schema/color.schema.js";
-import { ColorsServices } from "@/services/colors.service.js";
+import { ApiError } from "../lib/utils/api-error.js";
+import type { ColorDto } from "../schemas/color-schema/color.schema.js";
+import { ColorsServices } from "../services/colors.service.js";
 import type { Request, Response } from "express";
 
 export class ColorController {

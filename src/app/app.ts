@@ -6,7 +6,7 @@ import uploadRoutes from "../routes/uploads.routes.js";
 import swaggerUi from "swagger-ui-express";
 import cors from "cors";
 import { swaggerSpec } from "./docs/swagger.js";
-import { globalErrorMiddleware } from "@/middlewares/global-middlewares/globalError.middleware.js";
+import { globalErrorMiddleware } from "../middlewares/global-middlewares/globalError.middleware.js";
 
 const app = express();
 
@@ -23,7 +23,7 @@ async function startServer() {
   app.use("/api", productsRouters);
   app.use("/api/uploads/images", express.static("uploads"));
   app.use("/api", uploadRoutes);
-  app.use(globalErrorMiddleware)
+  app.use(globalErrorMiddleware);
 
   app.listen(appConfig.PORT, () => {
     console.log(`Server started on http://${appConfig.HOST}:${appConfig.PORT}`);

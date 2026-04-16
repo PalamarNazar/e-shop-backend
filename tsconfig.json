@@ -7,7 +7,7 @@
     "lib": ["esnext"],
     "types": ["node", "express"],
     "paths": {
-      "@/*": ["./src/*"]
+      "../*": ["./src/*"]
     },
 
     // Other Outputs

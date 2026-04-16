@@ -1,6 +1,6 @@
-import { ApiError } from "@/lib/utils/api-error.js";
-import type { CreateStylesDto } from "@/schemas/styles-schema/style-create.schema.js";
-import { StylesServices } from "@/services/styles.service.js";
+import { ApiError } from "../lib/utils/api-error.js";
+import type { CreateStylesDto } from "../schemas/styles-schema/style-create.schema.js";
+import { StylesServices } from "../services/styles.service.js";
 import type { Response, Request } from "express";
 
 export class StylesControllers {
@@ -40,7 +40,7 @@ export class StylesControllers {
     const { id } = req.params;
     const style = await this.stylesService.deleteStyle(id);
 
-    if (!style) throw new ApiError(404, 'Style Not Found')
+    if (!style) throw new ApiError(404, "Style Not Found");
 
     res.status(200).json(style);
   };

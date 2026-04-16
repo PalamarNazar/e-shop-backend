@@ -1,7 +1,7 @@
-import { SizesControllers } from "@/controllers/size.controller.js";
-import { asyncHandler } from "@/lib/utils/asyncHandler.js";
-import { validationRequestMiddleware } from "@/middlewares/validation/validationRequest.middleware.js";
-import { CreateSizeSchema } from "@/schemas/size-schema/size-create.schema.js";
+import { SizesControllers } from "../controllers/size.controller.js";
+import { asyncHandler } from "../lib/utils/asyncHandler.js";
+import { validationRequestMiddleware } from "../middlewares/validation/validationRequest.middleware.js";
+import { CreateSizeSchema } from "../schemas/size-schema/size-create.schema.js";
 import { Router } from "express";
 
 const router = Router();

@@ -1,5 +1,5 @@
-import prisma from "@/lib/db/db.js";
-import { PrismaErrorCodes } from "@/lib/errors/prisma-error-codes.js";
+import prisma from "../lib/db/db.js";
+import { PrismaErrorCodes } from "../lib/errors/prisma-error-codes.js";
 import { Prisma, type Size } from "@prisma/client";
 
 export class SizesService {

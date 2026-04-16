@@ -1,7 +1,7 @@
-import { BrandsControllers } from "@/controllers/brands.controller.js";
-import { asyncHandler } from "@/lib/utils/asyncHandler.js";
-import { validationRequestMiddleware } from "@/middlewares/validation/validationRequest.middleware.js";
-import { CreateBrandSchema } from "@/schemas/brand-schema/brand-create.schema.js";
+import { BrandsControllers } from "../controllers/brands.controller.js";
+import { asyncHandler } from "../lib/utils/asyncHandler.js";
+import { validationRequestMiddleware } from "../middlewares/validation/validationRequest.middleware.js";
+import { CreateBrandSchema } from "../schemas/brand-schema/brand-create.schema.js";
 import { Router } from "express";
 
 const router = Router();

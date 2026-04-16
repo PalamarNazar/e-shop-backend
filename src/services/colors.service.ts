@@ -1,6 +1,6 @@
-import prisma from "@/lib/db/db.js";
-import { PrismaErrorCodes } from "@/lib/errors/prisma-error-codes.js";
-import type { ColorDto } from "@/schemas/color-schema/color.schema.js";
+import prisma from "../lib/db/db.js";
+import { PrismaErrorCodes } from "../lib/errors/prisma-error-codes.js";
+import type { ColorDto } from "../schemas/color-schema/color.schema.js";
 import { Prisma, type Color } from "@prisma/client";
 
 export class ColorsServices {

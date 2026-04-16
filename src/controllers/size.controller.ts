@@ -1,6 +1,6 @@
-import { ApiError } from "@/lib/utils/api-error.js";
-import type { SizeDto } from "@/schemas/size-schema/size-create.schema.js";
-import { SizesService } from "@/services/sizes.service.js";
+import { ApiError } from "../lib/utils/api-error.js";
+import type { SizeDto } from "../schemas/size-schema/size-create.schema.js";
+import { SizesService } from "../services/sizes.service.js";
 import type { Request, Response } from "express";
 
 export class SizesControllers {

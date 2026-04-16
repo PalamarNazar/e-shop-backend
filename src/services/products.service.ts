@@ -1,7 +1,7 @@
-import prisma from "@/lib/db/db.js";
+import prisma from "../lib/db/db.js";
 import type { CreateProductDto } from "../schemas/product-schema/products.schema.js";
 import { Prisma, type Product, type Style } from "@prisma/client";
-import { PrismaErrorCodes } from "@/lib/errors/prisma-error-codes.js";
+import { PrismaErrorCodes } from "../lib/errors/prisma-error-codes.js";
 
 export class ProductsService {
   async getAllProducts() {

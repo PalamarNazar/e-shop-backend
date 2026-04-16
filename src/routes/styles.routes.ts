@@ -1,7 +1,7 @@
-import { StylesControllers } from "@/controllers/styles.controller.js";
-import { asyncHandler } from "@/lib/utils/asyncHandler.js";
-import { validationRequestMiddleware } from "@/middlewares/validation/validationRequest.middleware.js";
-import { createStyleSchema } from "@/schemas/styles-schema/style-create.schema.js";
+import { StylesControllers } from "../controllers/styles.controller.js";
+import { asyncHandler } from "../lib/utils/asyncHandler.js";
+import { validationRequestMiddleware } from "../middlewares/validation/validationRequest.middleware.js";
+import { createStyleSchema } from "../schemas/styles-schema/style-create.schema.js";
 import { Router } from "express";
 
 const router = Router();

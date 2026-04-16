@@ -1,7 +1,7 @@
-import { ColorController } from "@/controllers/colors.controller.js";
-import { asyncHandler } from "@/lib/utils/asyncHandler.js";
-import { validationRequestMiddleware } from "@/middlewares/validation/validationRequest.middleware.js";
-import { colorSchema } from "@/schemas/color-schema/color.schema.js";
+import { ColorController } from "../controllers/colors.controller.js";
+import { asyncHandler } from "../lib/utils/asyncHandler.js";
+import { validationRequestMiddleware } from "../middlewares/validation/validationRequest.middleware.js";
+import { colorSchema } from "../schemas/color-schema/color.schema.js";
 import { Router } from "express";
 
 const router = Router();

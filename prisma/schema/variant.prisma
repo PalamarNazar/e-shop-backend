@@ -1,0 +1,18 @@
+model Variant {
+    id          String      @id @default(uuid())
+
+    colorId   String   @map("color_id")
+    color     Color    @relation(fields: [colorId], references: [id])
+    
+    productId   String   @map("product_id")
+    product     Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+    images      Images[]
+
+    variantStocks       VariantStock[]
+    
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
+    
+    @@map("variants")
+}

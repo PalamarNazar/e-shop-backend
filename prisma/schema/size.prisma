@@ -1,0 +1,11 @@
+model Size {
+    id          String      @id @default(uuid())
+    name        String
+    
+    stocks    VariantStock[]
+
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
+
+    @@map("sizes")
+}

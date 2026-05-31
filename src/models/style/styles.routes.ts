@@ -1,15 +1,13 @@
-
 import { Router } from "express";
 import { asyncHandler } from "../../lib/utils/asyncHandler.js";
 import { validationRequestMiddleware } from "../../middlewares/validation/validationRequest.middleware.js";
-import { styleSchema } from "./style.schema.js";
+import { styleSchema } from "./schemas/style.schema.js";
 import { StylesControllers } from "./styles.controller.js";
+import { paginationQuerySchema } from "../../lib/schemas/pagination.schema.js";
 
 const router = Router();
 
 const stylesControllers = new StylesControllers();
-
-//  vynesti povtoriauszyjsia code v lib
 
 /**
  * @openapi
@@ -17,15 +15,22 @@ const stylesControllers = new StylesControllers();
  *   get:
  *     summary: Get all Styles
  *     tags: [Styles]
+ *     parameters:
+ *       - $ref: '#/components/parameters/PageQuery'
+ *       - $ref: '#/components/parameters/LimitQuery'
  *     responses:
  *       200:
  *         description: All styles
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Style'
+ *               $ref: '#/components/schemas/StylesPaginationResponse'
+ *       400:
+ *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationErrorResponse'
  *       500:
  *         description: Server error
  *         content:
@@ -41,8 +46,14 @@ const stylesControllers = new StylesControllers();
  *         application/json:
  *           schema:
  *             type: object
- *             required: [name]
- *             example: "Vintage"
+ *             required:
+ *               - name
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Style name
+ *             example:
+ *               name: "Vintage"
  *     responses:
  *       201:
  *         description: Product created
@@ -50,6 +61,12 @@ const stylesControllers = new StylesControllers();
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Style'
+ *       400:
+ *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationErrorResponse'
  *       500:
  *         description: Server error
  *         content:
@@ -123,7 +140,11 @@ const stylesControllers = new StylesControllers();
  *               schema:
  *                 $ref: '#/components/schemas/ErrorResponse'
  */
-router.get("/styles", asyncHandler(stylesControllers.getStyles));
+router.get(
+  "/styles",
+  validationRequestMiddleware(paginationQuerySchema, "query"),
+  asyncHandler(stylesControllers.getStyles),
+);
 
 router.get("/styles/:id", asyncHandler(stylesControllers.getStyleById));
 

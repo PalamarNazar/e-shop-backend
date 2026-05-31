@@ -1,8 +1,9 @@
 import { BrandsControllers } from "./brands.controller.js";
-import { brandSchema } from "./brand.schema.js";
+import { brandSchema } from "./schemas/brand.schema.js";
 import { Router } from "express";
 import { asyncHandler } from "../../lib/utils/asyncHandler.js";
 import { validationRequestMiddleware } from "../../middlewares/validation/validationRequest.middleware.js";
+import { paginationQuerySchema } from "../../lib/schemas/pagination.schema.js";
 
 const router = Router();
 
@@ -12,32 +13,41 @@ const brandControllers = new BrandsControllers();
  * @openapi
  * tags:
  *   name: Brands
- *   description: API для управления брендами
+ *   description: API for menegament brands
  */
 
 /**
  * @openapi
  * /api/brands:
  *   get:
- *     summary: Получить список всех брендов
- *     tags: [Brands]
+ *     summary: Get list all brands with pagination
+ *     tags:
+ *       - Brands
+ *     parameters:
+ *       - $ref: '#/components/parameters/PageQuery'
+ *       - $ref: '#/components/parameters/LimitQuery'
  *     responses:
- *       200:
- *         description: Список брендов успешно получен
+ *       '200':
+ *         description: Success response with brands list and meta data
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Brand'
- *       500:
+ *               $ref: '#/components/schemas/BrandPaginationResponse'
+ *       '400':
+ *         description: Validation error
  *         content:
- *             application/json:
- *               schema:
- *                 $ref: '#/components/schemas/ErrorResponse'
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationErrorResponse'
+ *       '500':
+ *         description: Inside server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
  *
  *   post:
- *     summary: Создать новый бренд
+ *     summary: Create new brand
  *     tags: [Brands]
  *     requestBody:
  *       required: true
@@ -45,23 +55,29 @@ const brandControllers = new BrandsControllers();
  *         application/json:
  *           schema:
  *             type: object
- *             required: [name]
- *             example: "Adidas"
+ *             required:
+ *               - name
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Brand name
+ *             example:
+ *               name: "Adidas"
  *     responses:
  *       201:
- *         description: Бренд успешно создан
+ *         description: Brand created
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Brand'
  *       400:
- *         description: Ошибка валидации
+ *         description: Validation error
  *         content:
  *             application/json:
  *               schema:
- *                 $ref: '#/components/schemas/ErrorResponse'
+ *                 $ref: '#/components/schemas/ValidationErrorResponse'
  *       409:
- *         description: Бренд с таким именем уже существует
+ *         description: Brand with this name already exist
  *         content:
  *             application/json:
  *               schema:
@@ -72,7 +88,11 @@ const brandControllers = new BrandsControllers();
  *               schema:
  *                 $ref: '#/components/schemas/ErrorResponse'
  */
-router.get("/brands", asyncHandler(brandControllers.getAllBrands));
+router.get(
+  "/brands",
+  validationRequestMiddleware(paginationQuerySchema, "query"),
+  asyncHandler(brandControllers.getAllBrands),
+);
 router.post(
   "/brands",
   validationRequestMiddleware(brandSchema),
@@ -127,7 +147,7 @@ router.post(
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/Brand'
  *       404:
  *         description: Бренд не найден
  *         content:

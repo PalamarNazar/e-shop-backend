@@ -17,7 +17,22 @@ const options: swaggerJsdoc.Options = {
       },
     ],
     components: {
+      parameters: {
+        PageQuery: { in: "query", name: "page", type: "number", default: 1 },
+        LimitQuery: { in: "query", name: "limit", type: "number", default: 10 },
+      },
       schemas: {
+        PaginationMeta: {
+          type: "object",
+          properties: {
+            totalItems: { type: "number", exaple: 120 },
+            totalPages: { type: "number", exaple: 12 },
+            currentPage: { type: "number", exaple: 2 },
+            limit: { type: "number", exaple: 10 },
+            hasNextPage: { type: "boolean", exaple: true },
+            hasPrevPage: { type: "boolean", exaple: true },
+          },
+        },
         Style: {
           type: "object",
           properties: {
@@ -43,12 +58,6 @@ const options: swaggerJsdoc.Options = {
               description: "Дата последнего обновления",
               example: "2024-03-21T12:00:00Z",
             },
-          },
-        },
-        StylesList: {
-          type: "array",
-          items: {
-            $ref: "#components/schemas/Style",
           },
         },
         Brand: {
@@ -78,12 +87,55 @@ const options: swaggerJsdoc.Options = {
             },
           },
         },
+        BrandPaginationResponse: {
+          type: "object",
+          properties: {
+            data: {
+              type: "array",
+              items: { $ref: "#/components/schemas/Brand" },
+            },
+            meta: { $ref: "#/components/schemas/PaginationMeta" },
+          },
+        },
+        StylesPaginationResponse: {
+          type: "object",
+          properties: {
+            data: {
+              type: "array",
+              items: { $ref: "#/components/schemas/Style" },
+            },
+            meta: { $ref: "#/components/schemas/PaginationMeta" },
+          },
+        },
         ErrorResponse: {
           type: "object",
           properties: {
+            success: { type: "boolean", example: false },
+            status: { type: "number", example: 500 },
             message: {
               type: "string",
               example: "Server Error",
+            },
+          },
+        },
+        ValidationErrorResponse: {
+          type: "object",
+          properties: {
+            success: { type: "boolean", example: false },
+            status: { type: "number", example: 400 },
+            message: {
+              type: "string",
+              example: "Validation error",
+            },
+            errors: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  field: { type: "string", example: "name" },
+                  message: { type: "string", example: "Name is too small" },
+                },
+              },
             },
           },
         },
@@ -91,25 +143,51 @@ const options: swaggerJsdoc.Options = {
           type: "object",
           required: ["email", "password", "role"],
           properties: {
-            email: { type: "string", format: "email", example: "customer@clothing-shop.com" },
-            password: { type: "string", minLength: 8, maxLength: 32, example: "Example_123" },
+            email: {
+              type: "string",
+              format: "email",
+              example: "customer@clothing-shop.com",
+            },
+            password: {
+              type: "string",
+              minLength: 8,
+              maxLength: 32,
+              example: "Example_123",
+            },
             role: { type: "string", enum: ["USER", "ADMIN"], example: "USER" },
           },
         },
         UserDto: {
           type: "object",
           properties: {
-            id: { type: "string", example: "c7b344f3-a294-4b53-bc2a-7af169ad8b23" },
-            email: { type: "string", format: "email", example: "customer@clothing-shop.com" },
-            roles: { type: "array", items: { type: "string" }, example: ["USER"] },
+            id: {
+              type: "string",
+              example: "c7b344f3-a294-4b53-bc2a-7af169ad8b23",
+            },
+            email: {
+              type: "string",
+              format: "email",
+              example: "customer@clothing-shop.com",
+            },
+            roles: {
+              type: "array",
+              items: { type: "string" },
+              example: ["USER"],
+            },
             isActivated: { type: "boolean", example: false },
           },
         },
         AuthResponse: {
           type: "object",
           properties: {
-            accessToken: { type: "string", example: "eyJhbGciOiJIUzI1NiIsInR5cCI6..." },
-            refreshToken: { type: "string", example: "eyJhbGciOiJIUzI1NiIsInR5cCI6..." },
+            accessToken: {
+              type: "string",
+              example: "eyJhbGciOiJIUzI1NiIsInR5cCI6...",
+            },
+            refreshToken: {
+              type: "string",
+              example: "eyJhbGciOiJIUzI1NiIsInR5cCI6...",
+            },
             user: { $ref: "#/components/schemas/UserDto" },
           },
         },
@@ -119,7 +197,7 @@ const options: swaggerJsdoc.Options = {
             success: { type: "boolean", example: false },
             status: { type: "integer", example: 401 },
             message: { type: "string", example: "Unauthorized" },
-          }
+          },
         },
         ApiError: {
           type: "object",
@@ -137,10 +215,7 @@ const options: swaggerJsdoc.Options = {
       },
     },
   },
-  apis: [
-    "./src/models/**/*.routes.ts",
-    "./src/app/*.ts",
-  ],
+  apis: ["./src/models/**/*.routes.ts", "./src/app/*.ts"],
 };
 
 export const swaggerSpec = swaggerJsdoc(options);

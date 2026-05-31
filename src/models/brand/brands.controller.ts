@@ -1,38 +1,34 @@
-
 import type { Request, Response } from "express";
 import { BrandsService } from "./brands.service.js";
-import { ApiError } from "../../lib/utils/api-error.js";
-import type { BrandDto } from "./brand.schema.js";
+import type { BrandDto } from "./schemas/brand.schema.js";
+import type { PaginationQuery } from "../../lib/types/pagination.types.js";
+import type { PaginationQueryDto } from "../../lib/schemas/pagination.schema.js";
 
 export class BrandsControllers {
   constructor(private brandsService: BrandsService = new BrandsService()) {}
 
-  getAllBrands = async (_: Request, res: Response) => {
-    const brands = await this.brandsService.getAllBrands();
+  getAllBrands = async (req: Request, res: Response) => {
+    const { page, limit } = req.query as unknown as PaginationQueryDto
+    const brands = await this.brandsService.getAllBrands(page, limit);
     res.status(200).json(brands);
   };
 
   getBrandById = async (req: Request<{ id: string }>, res: Response) => {
     const { id } = req.params;
     const brand = await this.brandsService.getBrandById(id);
-
-    if (!brand) throw new ApiError(404, "Brand Not Found");
-
     res.status(200).json(brand);
   };
 
   createBrand = async (req: Request, res: Response) => {
-    const { brand }: BrandDto = req.body;
+    const { name }: BrandDto = req.body;
 
-    const newBrand = await this.brandsService.createBrand(brand);
+    const newBrand = await this.brandsService.createBrand(name);
     res.status(201).json(newBrand);
   };
 
   deleteBrand = async (req: Request<{ id: string }>, res: Response) => {
     const { id } = req.params;
     const deletedBrand = await this.brandsService.deleteBrand(id);
-
-    if (!deletedBrand) throw new ApiError(404, "Brand Not Found");
     res.status(200).json(deletedBrand);
   };
 }

@@ -1,9 +1,16 @@
-import { Prisma, type Style } from "@prisma/client";
+import { type Style } from "@prisma/client";
 import prisma from "../../lib/db/db.js";
 import { PrismaErrorCodes } from "../../lib/errors/prisma-error-codes.js";
 import { ApiError } from "../../lib/utils/api-error.js";
 import type { ResponseWithPagination } from "../../lib/types/pagination.types.js";
+import { handlePrismaError } from "../../lib/utils/handle-prisma-error.js";
+import type { UpdateStylePayload } from "./schemas/style.schema.js";
+import { StyleUpdateInputSchema } from "@generate";
 
+const errorMapping = {
+  [PrismaErrorCodes.RecordNotFound.code]: [404, "Style not found"],
+  [PrismaErrorCodes.UniqueViolation.code]: [409, "Dublicated style name"],
+} as const;
 export class StylesServices {
   async getAllStyles(
     page: number,
@@ -35,24 +42,31 @@ export class StylesServices {
     };
   }
 
-  async createStyle(name: string): Promise<Style> {
+  async createStyle(name: string, slug: string): Promise<Style> {
     try {
-      const newStyle = await prisma.style.create({ data: { name } });
+      const newStyle = await prisma.style.create({ data: { name, slug } });
       return newStyle;
     } catch (error) {
-      if (
-        error instanceof Prisma.PrismaClientKnownRequestError &&
-        error.code === PrismaErrorCodes.UniqueViolation.code
-      ) {
-        throw new ApiError(409, `Style "${name}" already exist`);
-      }
+      handlePrismaError(error, errorMapping);
+      throw error;
+    }
+  }
+
+  async updateStyle(
+    id: string,
+    payload: UpdateStylePayload,
+  ): Promise<Style> {
+    try {
+      const style = StyleUpdateInputSchema.parse(payload) 
+      return await prisma.style.update({ where: { id }, data: style });
+    } catch (error) {
+      handlePrismaError(error, errorMapping);
       throw error;
     }
   }
 
   async getStyleById(id: string): Promise<Style> {
     const style = await prisma.style.findUnique({ where: { id } });
-
     if (!style) throw new ApiError(404, "Style not found");
     return style;
   }
@@ -61,13 +75,7 @@ export class StylesServices {
     try {
       return await prisma.style.delete({ where: { id } });
     } catch (error) {
-      if (
-        error instanceof Prisma.PrismaClientKnownRequestError &&
-        error.code === PrismaErrorCodes.RecordNotFound.code
-      ) {
-        throw new ApiError(404, "Style not exist");
-      }
-
+      handlePrismaError(error, errorMapping);
       throw error;
     }
   }

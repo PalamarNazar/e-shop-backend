@@ -1,9 +1,9 @@
-import type { UserPayload } from "../../models/auth/middlewares/auth.middleware.js";
+import type { TokenPayload } from "../../models/auth/types/token-payload.js";
 
 declare global {
   namespace Express {
     interface Request {
-      user?: UserPayload; 
+      user?: TokenPayload; 
     }
   }
 }

@@ -1,7 +1,8 @@
 model Color {
     id          String      @id @default(uuid())
-    name        String
-    hex         String
+    name        String      @unique
+    hex         String      @unique
+    slug        String      @unique
     
     variant     Variant[]
     

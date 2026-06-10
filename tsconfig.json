@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "rootDir": "./src",
+    "rootDir": ".",
     "outDir": "./dist",
     "module": "nodenext",
     "target": "esnext",
     "lib": ["esnext"],
     "types": ["node", "express"],
     "paths": {
-      "../*": ["./src/*"]
+      "../*": ["./src/*"],
+      "@generate": ["./prisma/schema/generated/zod/index.ts"]
     },
 
     // Other Outputs

@@ -1,4 +1,4 @@
-model Images {
+model Image {
     id          String      @id @default(uuid())
     url         String
     

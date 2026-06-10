@@ -7,8 +7,8 @@ model VariantStock {
     sizeId    String   @map("size_id")
     size      Size     @relation(fields: [sizeId], references: [id], onDelete: Cascade)
     
-    stock  Int      @default(0) // Тот самый Stock
+    stock  Int      @default(0)
 
-    @@unique([variantId, sizeId]) // Чтобы нельзя было создать два одинаковых размера для одного варианта
+    @@unique([variantId, sizeId])
     @@map("variant_stocks")
 }

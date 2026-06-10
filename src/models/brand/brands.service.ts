@@ -3,7 +3,14 @@ import prisma from "../../lib/db/db.js";
 import { PrismaErrorCodes } from "../../lib/errors/prisma-error-codes.js";
 import { ApiError } from "../../lib/utils/api-error.js";
 import type { ResponseWithPagination } from "../../lib/types/pagination.types.js";
+import { handlePrismaError } from "../../lib/utils/handle-prisma-error.js";
+import type { UpdateBrandPayload } from "./schemas/brand.schema.js";
+import { BrandUpdateInputSchema } from "@generate";
 
+const errorMapping = {
+  [PrismaErrorCodes.RecordNotFound.code]: [404, "Brand not found"],
+  [PrismaErrorCodes.UniqueViolation.code]: [409, "Dublicated brand"],
+} as const;
 export class BrandsService {
   async getAllBrands(
     page: number,
@@ -35,17 +42,26 @@ export class BrandsService {
     };
   }
 
-  async createBrand(name: string): Promise<Brand> {
+  async createBrand(name: string, slug: string): Promise<Brand> {
     try {
-      const newBrand = await prisma.brand.create({ data: { name } });
+      const newBrand = await prisma.brand.create({ data: { name, slug } });
       return newBrand;
     } catch (error) {
-      if (
-        error instanceof Prisma.PrismaClientKnownRequestError &&
-        error.code === PrismaErrorCodes.UniqueViolation.code
-      ) {
-        throw new ApiError(409, `Brand with name "${name}" already exist`);
-      }
+      handlePrismaError(error, errorMapping);
+      throw error;
+    }
+  }
+
+  async updateBrand(id: string, payload: UpdateBrandPayload): Promise<Brand> {
+    try {
+      const brand = BrandUpdateInputSchema.parse(payload)
+      const newBrand = await prisma.brand.update({
+        where: { id },
+        data: brand,
+      });
+      return newBrand;
+    } catch (error) {
+      handlePrismaError(error, errorMapping);
       throw error;
     }
   }
@@ -63,13 +79,7 @@ export class BrandsService {
         where: { id },
       });
     } catch (error) {
-      if (
-        error instanceof Prisma.PrismaClientKnownRequestError &&
-        error.code === PrismaErrorCodes.RecordNotFound.code
-      ) {
-        throw new ApiError(404, "Brand not exist");
-      }
-
+      handlePrismaError(error, errorMapping);
       throw error;
     }
   }

@@ -34,17 +34,20 @@
     "nodemailer": "^8.0.7",
     "pg": "^8.20.0",
     "prisma": "^7.7.0",
+    "slugify": "^1.6.9",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "typescript": "^6.0.2",
     "uuid": "^13.0.2",
-    "zod": "^4.3.6"
+    "zod": "^4.3.6",
+    "zod-prisma-types": "^3.3.11"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.9.1",
     "@types/nodemailer": "^8.0.0",
+    "tsconfig-paths": "^4.2.0",
     "tsx": "^4.21.0"
   }
 }

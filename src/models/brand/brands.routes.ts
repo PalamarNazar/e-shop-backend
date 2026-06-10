@@ -1,9 +1,11 @@
 import { BrandsControllers } from "./brands.controller.js";
-import { brandSchema } from "./schemas/brand.schema.js";
+import { brandSchema, updateBrandSchema } from "./schemas/brand.schema.js";
 import { Router } from "express";
 import { asyncHandler } from "../../lib/utils/asyncHandler.js";
 import { validationRequestMiddleware } from "../../middlewares/validation/validationRequest.middleware.js";
 import { paginationQuerySchema } from "../../lib/schemas/pagination.schema.js";
+import { checkAuthMiddleware } from "../../middlewares/auth-middlerares/auth.middleware.js";
+import { isAdminMiddleware } from "../../middlewares/auth-middlerares/is-admin.middleware.js";
 
 const router = Router();
 
@@ -61,8 +63,12 @@ const brandControllers = new BrandsControllers();
  *               name:
  *                 type: string
  *                 description: Brand name
+ *               slug:
+ *                 type: string
+ *                 description: Brand slug
  *             example:
  *               name: "Adidas"
+ *               slug: "adidas"
  *     responses:
  *       201:
  *         description: Brand created
@@ -95,6 +101,8 @@ router.get(
 );
 router.post(
   "/brands",
+  checkAuthMiddleware,
+  isAdminMiddleware,
   validationRequestMiddleware(brandSchema),
   asyncHandler(brandControllers.createBrand),
 );
@@ -103,7 +111,7 @@ router.post(
  * @openapi
  * /api/brands/{id}:
  *   get:
- *     summary: Получить бренд по ID
+ *     summary: Get brand
  *     tags: [Brands]
  *     parameters:
  *       - in: path
@@ -111,16 +119,16 @@ router.post(
  *         required: true
  *         schema:
  *           type: string
- *           description: ID бренда
+ *           description: Brand ID
  *     responses:
  *       200:
- *         description: Бренд найден
+ *         description: Brand exist
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Brand'
  *       404:
- *         description: Бренд не найден
+ *         description: Brand not found
  *         content:
  *           application/json:
  *             schema:
@@ -132,7 +140,7 @@ router.post(
  *               $ref: '#/components/schemas/ErrorResponse'
  *
  *   delete:
- *     summary: Удалить бренд
+ *     summary: Delete brand
  *     tags: [Brands]
  *     parameters:
  *       - in: path
@@ -140,16 +148,70 @@ router.post(
  *         required: true
  *         schema:
  *           type: string
- *           description: ID бренда
+ *           description: Brand ID
  *     responses:
  *       200:
- *         description: Бренд успешно удален
+ *         description: Brand deleted
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Brand'
  *       404:
- *         description: Бренд не найден
+ *         description: Brand not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       500:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *   patch:
+ *     summary: Update brand
+ *     tags: [Brands]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           description: Brand ID
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Brand name
+ *                 example: "Nike"
+ *               slug:
+ *                 type: string
+ *                 description: Brand slug
+ *                 example: "nike"
+ *     responses:
+ *       200:
+ *         description: Brand updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Brand'
+ *       400:
+ *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ValidationErrorResponse'
+ *       409:
+ *         description: Dublicated brand name
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       404:
+ *         description: Brand not found
  *         content:
  *           application/json:
  *             schema:
@@ -161,6 +223,18 @@ router.post(
  *               $ref: '#/components/schemas/ErrorResponse'
  */
 router.get("/brands/:id", asyncHandler(brandControllers.getBrandById));
-router.delete("/brands/:id", asyncHandler(brandControllers.deleteBrand));
+router.delete(
+  "/brands/:id",
+  checkAuthMiddleware,
+  isAdminMiddleware,
+  asyncHandler(brandControllers.deleteBrand),
+);
+router.patch(
+  "/brands/:id",
+  checkAuthMiddleware,
+  isAdminMiddleware,
+  validationRequestMiddleware(updateBrandSchema),
+  asyncHandler(brandControllers.updateBrand),
+);
 
 export default router;

@@ -25,12 +25,12 @@ const options: swaggerJsdoc.Options = {
         PaginationMeta: {
           type: "object",
           properties: {
-            totalItems: { type: "number", exaple: 120 },
-            totalPages: { type: "number", exaple: 12 },
-            currentPage: { type: "number", exaple: 2 },
-            limit: { type: "number", exaple: 10 },
-            hasNextPage: { type: "boolean", exaple: true },
-            hasPrevPage: { type: "boolean", exaple: true },
+            totalItems: { type: "integer", example: 120 },
+            totalPages: { type: "integer", example: 12 },
+            currentPage: { type: "integer", example: 2 },
+            limit: { type: "integer", example: 10 },
+            hasNextPage: { type: "boolean", example: true },
+            hasPrevPage: { type: "boolean", example: true },
           },
         },
         Style: {
@@ -38,24 +38,29 @@ const options: swaggerJsdoc.Options = {
           properties: {
             id: {
               type: "string",
-              description: "Уникальный идентификатор",
+              description: "Unique id",
               example: "65f8a1b2-c3d4-4e5f-a6b7-c8d9e0f1a2b3",
             },
             name: {
               type: "string",
-              description: "Название стиля",
+              description: "Style name",
               example: "Modern Classic",
+            },
+            slug: {
+              type: "string",
+              description: "Style slug",
+              example: "modern-classic",
             },
             createdAt: {
               type: "string",
               format: "date-time",
-              description: "Дата создания",
+              description: "Created data",
               example: "2024-03-20T10:00:00Z",
             },
             updatedAt: {
               type: "string",
               format: "date-time",
-              description: "Дата последнего обновления",
+              description: "Last data update",
               example: "2024-03-21T12:00:00Z",
             },
           },
@@ -65,25 +70,99 @@ const options: swaggerJsdoc.Options = {
           properties: {
             id: {
               type: "string",
-              description: "Уникальный идентификатор бренда",
+              description: "Unique id",
               example: "65f8a1b2-c3d4-4e5f-a6b7-c8d9e0f1a2b3",
             },
             name: {
               type: "string",
-              description: "Название бренда",
+              description: "Brand name",
               example: "Nike",
+            },
+            slug: {
+              type: "string",
+              description: "Brand slug",
+              example: "nike",
             },
             createdAt: {
               type: "string",
               format: "date-time",
-              description: "Дата создания записи",
+              description: "Created data",
               example: "2024-03-20T10:00:00.000Z",
             },
             updatedAt: {
               type: "string",
               format: "date-time",
-              description: "Дата последнего обновления записи",
+              description: "Last data update",
               example: "2024-03-21T12:00:00.000Z",
+            },
+          },
+        },
+        Size: {
+          type: "object",
+          properties: {
+            id: {
+              type: "string",
+              description: "Unique id",
+              example: "65f8a1b2-c3d4-4e5f-a6b7-c8d9e0f1a2b3",
+            },
+            name: {
+              type: "string",
+              description: "Size name",
+              example: "M",
+            },
+            slug: {
+              type: "string",
+              description: "Size slug",
+              example: "m",
+            },
+            createdAt: {
+              type: "string",
+              format: "date-time",
+              description: "Created data",
+              example: "2024-03-20T10:00:00Z",
+            },
+            updatedAt: {
+              type: "string",
+              format: "date-time",
+              description: "Last data update",
+              example: "2024-03-21T12:00:00Z",
+            },
+          },
+        },
+        Color: {
+          type: "object",
+          properties: {
+            id: {
+              type: "string",
+              description: "Unique id",
+              example: "65f8a1b2-c3d4-4e5f-a6b7-c8d9e0f1a2b3",
+            },
+            name: {
+              type: "string",
+              description: "Color name",
+              example: "White",
+            },
+            slug: {
+              type: "string",
+              description: "Color slug",
+              example: "white",
+            },
+            hex: {
+              type: "string",
+              description: "Color hex",
+              example: "fff",
+            },
+            createdAt: {
+              type: "string",
+              format: "date-time",
+              description: "Created data",
+              example: "2024-03-20T10:00:00Z",
+            },
+            updatedAt: {
+              type: "string",
+              format: "date-time",
+              description: "Last data update",
+              example: "2024-03-21T12:00:00Z",
             },
           },
         },
@@ -103,6 +182,26 @@ const options: swaggerJsdoc.Options = {
             data: {
               type: "array",
               items: { $ref: "#/components/schemas/Style" },
+            },
+            meta: { $ref: "#/components/schemas/PaginationMeta" },
+          },
+        },
+        SizePaginationResponse: {
+          type: "object",
+          properties: {
+            data: {
+              type: "array",
+              items: { $ref: "#/components/schemas/Size" },
+            },
+            meta: { $ref: "#/components/schemas/PaginationMeta" },
+          },
+        },
+        ColorPaginationResponse: {
+          type: "object",
+          properties: {
+            data: {
+              type: "array",
+              items: { $ref: "#/components/schemas/Color" },
             },
             meta: { $ref: "#/components/schemas/PaginationMeta" },
           },
@@ -197,19 +296,6 @@ const options: swaggerJsdoc.Options = {
             success: { type: "boolean", example: false },
             status: { type: "integer", example: 401 },
             message: { type: "string", example: "Unauthorized" },
-          },
-        },
-        ApiError: {
-          type: "object",
-          properties: {
-            success: { type: "boolean", example: false },
-            status: { type: "integer", example: 400 },
-            message: { type: "string", example: "Validation failed" },
-            errors: {
-              type: "array",
-              items: { type: "object" },
-              example: [{ message: "Invalid email format", path: ["email"] }],
-            },
           },
         },
       },

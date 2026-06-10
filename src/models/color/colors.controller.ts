@@ -1,36 +1,39 @@
-
 import type { Request, Response } from "express";
 import { ColorsServices } from "./colors.service.js";
-import { ApiError } from "../../lib/utils/api-error.js";
-import type { ColorDto } from "./color.schema.js";
+import type { ColorDto, UpdateColorPayload } from "./schemas/color.schema.js";
+import type { PaginationQueryDto } from "../../lib/schemas/pagination.schema.js";
 
 export class ColorController {
   constructor(private colorsServices: ColorsServices = new ColorsServices()) {}
 
   getAllColors = async (req: Request, res: Response) => {
-    const colors = await this.colorsServices.getAllColors();
+    const { page, limit } = req.query as unknown as PaginationQueryDto;
+    const colors = await this.colorsServices.getAllColors(page, limit);
     res.status(200).json(colors);
   };
 
   getColorById = async (req: Request<{ id: string }>, res: Response) => {
-    const color = await this.colorsServices.getColorById(req.params.id);
-
-    if (!color) throw new ApiError(404, "Color Not Found");
-
+    const { id } = req.params;
+    const color = await this.colorsServices.getColorById(id);
     res.status(200).json(color);
   };
 
-  createColor = async (req: Request<null, null, ColorDto>, res: Response) => {
+  createColor = async (req: Request<{}, {}, ColorDto>, res: Response) => {
     const color = req.body;
     const newColor = await this.colorsServices.createColor(color);
     res.status(201).json(newColor);
   };
+
   deleteColor = async (req: Request<{ id: string }>, res: Response) => {
     const { id } = req.params;
     const color = await this.colorsServices.deleteColor(id);
-
-    if (!color) throw new ApiError(404, "Color Not Found");
-
     res.status(200).json(color);
+  };
+
+  updateColor = async (req: Request<{ id: string }, {}, UpdateColorPayload>, res: Response) => {
+    const { id } = req.params;
+    const payload = req.body
+    const updatedColor = await this.colorsServices.updateColor(id, payload);
+    res.status(200).json(updatedColor);
   };
 }

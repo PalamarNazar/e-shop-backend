@@ -2,13 +2,13 @@ import { Router } from "express";
 import { asyncHandler } from "../../lib/utils/asyncHandler.js";
 import { AuthController } from "./auth.controller.js";
 import { validationMiddleware } from "./middlewares/validation.middleware.js";
-import { checkAuthMiddleware } from "./middlewares/auth.middleware.js";
+import { checkAuthMiddleware } from "../../middlewares/auth-middlerares/auth.middleware.js";
 
 const router = Router();
 
 const authController = new AuthController();
 
-/** 
+/**
  * @openapi
  * components:
  *   securitySchemes:
@@ -19,8 +19,7 @@ const authController = new AuthController();
  *       description: Enter your Access Token here (received after login/registration)
  */
 
-
-/** 
+/**
  * @openapi
  * /api/auth/login:
  *   post:
@@ -127,7 +126,7 @@ router.post(
  */
 router.post("/auth/logout", asyncHandler(authController.logout));
 
-/** 
+/**
  * @openapi
  * /api/auth/delete:
  *   delete:
@@ -157,7 +156,7 @@ router.delete(
   asyncHandler(authController.delete),
 );
 
-/** 
+/**
  * @openapi
  * /api/auth/activate/{link}:
  *   get:

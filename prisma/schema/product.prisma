@@ -1,3 +1,9 @@
+enum ProductGender {
+  MAN
+  WOMAN
+  UNISEX
+}
+
 model Product {
   id          String      @id @default(uuid())
 
@@ -5,12 +11,12 @@ model Product {
   description String
   price       Float
   discount    Float?
-  gender      String
+  gender      ProductGender
   styles      Style[]
   rating      Float
-  
-  brandId     String?   @map("brand_id")
-  brand      Brand?      @relation(fields: [brandId], references: [id])
+
+  brandId     String       @map("brand_id")
+  brand       Brand        @relation(fields: [brandId], references: [id])
 
   variants    Variant[]
 

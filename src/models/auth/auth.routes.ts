@@ -203,5 +203,6 @@ router.get("/auth/activate/:link", asyncHandler(authController.activate));
  *               $ref: '#/components/schemas/ApiUnauthorized'
  */
 router.get("/auth/refresh", asyncHandler(authController.refresh));
+router.get("/auth/me", checkAuthMiddleware, asyncHandler(authController.me));
 
 export default router;

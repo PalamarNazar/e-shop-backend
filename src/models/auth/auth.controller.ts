@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { AuthService } from "./services/auth.service.js";
 import type { AuthTypes } from "./schemas/auth.schema.js";
+import { ApiError } from "../../lib/utils/api-error.js";
 
 const REFRESH_COOKIE_NAME = process.env.JWT_REFRESH_NAME || "refreshToken";
 
@@ -49,6 +50,12 @@ export class AuthController {
 
     res.status(200).json(userData);
   };
+  me = async (req: Request, res: Response) => {
+    const user = req.user;
+    if (!user) throw new ApiError(401, "Unaothorized");
+    const { email, id, isActivated, roles } = user;
+    res.status(200).json({ id, email, isActivated, roles });
+  };
 
   activate = async (req: Request<{ link: string }>, res: Response) => {
     const activationLink = req.params.link;
@@ -58,10 +65,10 @@ export class AuthController {
   };
 
   delete = async (req: Request, res: Response) => {
-    const userData = req.user
-    const deletedUser = await this.authService.deleteUser(userData)
+    const userData = req.user;
+    const deletedUser = await this.authService.deleteUser(userData);
     res.clearCookie(REFRESH_COOKIE_NAME);
 
     return res.status(200).json(deletedUser);
-  }
+  };
 }

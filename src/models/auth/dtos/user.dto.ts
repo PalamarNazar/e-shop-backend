@@ -1,0 +1,15 @@
+import type { User } from "@prisma/client";
+
+export class UserDto {
+    email;
+    id;
+    isActivated;
+    roles;
+
+    constructor(model: User) {
+        this.email = model.email
+        this.id = model.id
+        this.isActivated = model.isActivated
+        this.roles = model.roles
+    }
+}

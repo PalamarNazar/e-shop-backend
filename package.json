@@ -5,9 +5,9 @@
   "license": "ISC",
   "author": "",
   "type": "module",
-  "main": "dist/app/app.js",
+  "main": "dist/src/app/app.js",
   "scripts": {
-    "start": "node dist/app/app.js",
+    "start": "node dist/src/app/app.js",
     "dev": "cross-env tsx watch src/app/app.ts",
     "prod": "cross-env tsx watch src/app/app.ts",
     "build": "tsc",

@@ -1,13 +1,13 @@
 model Color {
-    id          String      @id @default(uuid())
-    name        String      @unique
-    hex         String      @unique
-    slug        String      @unique
-    
-    variant     Variant[]
-    
-    createdAt   DateTime @default(now()) @map("created_at")
-    updatedAt   DateTime @updatedAt @map("updated_at")
-    
-    @@map("colors")
+  id   String @id @default(uuid())
+  name String @unique
+  hex  String @unique
+  slug String @unique
+
+  variant Variant[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("colors")
 }

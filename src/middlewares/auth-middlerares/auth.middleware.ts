@@ -30,6 +30,6 @@ export const checkAuthMiddleware = (
 
     next();
   } catch (error) {
-    throw new ApiError(401, "Unauthorized");
+    next(new ApiError(401, "Unauthorized"));
   }
 };

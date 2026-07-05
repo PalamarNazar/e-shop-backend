@@ -1,9 +1,9 @@
 model Brand {
-  id        String   @id @default(uuid())
-  name      String   @unique
-  slug      String   @unique
+  id   String @id @default(uuid())
+  name String @unique
+  slug String @unique
 
-  products  Product[]
+  products Product[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

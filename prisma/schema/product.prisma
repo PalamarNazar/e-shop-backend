@@ -5,7 +5,7 @@ enum ProductGender {
 }
 
 model Product {
-  id          String      @id @default(uuid())
+  id String @id @default(uuid())
 
   title       String
   description String
@@ -15,13 +15,14 @@ model Product {
   styles      Style[]
   rating      Float
 
-  brandId     String       @map("brand_id")
-  brand       Brand        @relation(fields: [brandId], references: [id])
+  brandId String @map("brand_id")
+  brand   Brand  @relation(fields: [brandId], references: [id])
 
-  variants    Variant[]
+  variants Variant[]
 
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  cartItems CartItem[]
 
   @@map("products")
 }

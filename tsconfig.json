@@ -8,7 +8,7 @@
     "types": ["node", "express"],
     "paths": {
       "../*": ["./src/*"],
-      "@generate": ["./prisma/schema/generated/zod/index.ts"]
+      "#generate": ["./prisma/schema/generated/zod/index.ts"]
     },
 
     // Other Outputs

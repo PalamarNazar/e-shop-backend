@@ -5,7 +5,7 @@ import { PrismaErrorCodes } from "../../lib/errors/prisma-error-codes.js";
 import { ApiError } from "../../lib/utils/api-error.js";
 import { handlePrismaError } from "../../lib/utils/handle-prisma-error.js";
 import type { ResponseWithPagination } from "../../lib/types/pagination.types.js";
-import { ColorUpdateInputSchema } from "@generate";
+import { ColorUpdateInputSchema } from "#generate";
 
 const errorMapping = {
   [PrismaErrorCodes.RecordNotFound.code]: [404, "Color not found"],

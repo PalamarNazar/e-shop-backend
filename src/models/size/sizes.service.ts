@@ -4,9 +4,8 @@ import { PrismaErrorCodes } from "../../lib/errors/prisma-error-codes.js";
 import type { ResponseWithPagination } from "../../lib/types/pagination.types.js";
 import { ApiError } from "../../lib/utils/api-error.js";
 import { handlePrismaError } from "../../lib/utils/handle-prisma-error.js";
-import type { UpdateStylePayload } from "../style/schemas/style.schema.js";
 import type { UpdateSizePayload } from "./schemas/size.schema.js";
-import { SizeUpdateInputSchema } from "@generate";
+import { SizeUpdateInputSchema } from "#generate";
 
 const errorMapping = {
   [PrismaErrorCodes.RecordNotFound.code]: [404, "Size not found"],

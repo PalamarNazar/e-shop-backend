@@ -14,7 +14,7 @@ import { ProductShortResponseDto } from "./dtos/product-short-response.dto.js";
 import type { UnionProductsResponse } from "./types/union-product-response.types.js";
 import { Prisma } from "@prisma/client";
 import { ProductResponseDto } from "./dtos/product-response.dto.js";
-import {  ProductUpdateInputSchema } from '@generate'
+import {  ProductUpdateInputSchema } from '#generate'
 
 export const errorMapping: Record<string, ErrorResolver> = {
   [PrismaErrorCodes.RecordNotFound.code]: () =>

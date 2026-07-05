@@ -1,11 +1,11 @@
-import { Prisma, type Brand } from "@prisma/client";
+import { type Brand } from "@prisma/client";
 import prisma from "../../lib/db/db.js";
 import { PrismaErrorCodes } from "../../lib/errors/prisma-error-codes.js";
 import { ApiError } from "../../lib/utils/api-error.js";
 import type { ResponseWithPagination } from "../../lib/types/pagination.types.js";
 import { handlePrismaError } from "../../lib/utils/handle-prisma-error.js";
 import type { UpdateBrandPayload } from "./schemas/brand.schema.js";
-import { BrandUpdateInputSchema } from "@generate";
+import { BrandUpdateInputSchema } from "#generate";
 
 const errorMapping = {
   [PrismaErrorCodes.RecordNotFound.code]: [404, "Brand not found"],

@@ -6,8 +6,11 @@
   "author": "",
   "type": "module",
   "main": "dist/src/app/app.js",
+  "imports": {
+    "#generate": "./dist/prisma/schema/generated/zod/index.js"
+  },
   "scripts": {
-    "start": "node dist/src/app/app.js",
+    "start": "node --import tsconfig-paths/register.js dist/src/app/app.js",
     "dev": "cross-env tsx watch src/app/app.ts",
     "prod": "cross-env tsx watch src/app/app.ts",
     "build": "tsc",

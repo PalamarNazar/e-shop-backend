@@ -5,7 +5,7 @@ import { ApiError } from "../../lib/utils/api-error.js";
 import type { ResponseWithPagination } from "../../lib/types/pagination.types.js";
 import { handlePrismaError } from "../../lib/utils/handle-prisma-error.js";
 import type { UpdateStylePayload } from "./schemas/style.schema.js";
-import { StyleUpdateInputSchema } from "@generate";
+import { StyleUpdateInputSchema } from "#generate";
 
 const errorMapping = {
   [PrismaErrorCodes.RecordNotFound.code]: [404, "Style not found"],
